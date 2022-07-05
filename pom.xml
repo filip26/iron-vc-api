@@ -52,7 +52,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <argLine>-Dfile.encoding=UTF-8</argLine>
 
-        <iron-vc.version>0.7.0</iron-vc.version>
+        <iron-vc.version>0.7.1-SNAPSHOT</iron-vc.version>
 
         <vertx.version>4.3.1</vertx.version>
 

@@ -4,6 +4,10 @@ import java.nio.charset.Charset;
 import java.time.Duration;
 import java.time.Instant;
 
+import com.apicatalog.jsonld.loader.DocumentLoader;
+import com.apicatalog.jsonld.loader.FileLoader;
+import com.apicatalog.jsonld.loader.HttpLoader;
+import com.apicatalog.jsonld.loader.SchemeRouter;
 import com.apicatalog.vc.service.issuer.IssuerApi;
 import com.apicatalog.vc.service.verifier.VerifierApi;
 
@@ -19,6 +23,11 @@ import io.vertx.json.schema.SchemaRouterOptions;
 
 public class VcApiVerticle extends AbstractVerticle {
 
+    public static final DocumentLoader LOADER =
+            new SchemeRouter()
+                    .set("http", HttpLoader.defaultInstance())
+                    .set("https", HttpLoader.defaultInstance());
+    
     Instant startTime;
 
     @Override

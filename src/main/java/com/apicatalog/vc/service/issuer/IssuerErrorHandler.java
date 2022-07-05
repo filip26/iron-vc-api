@@ -1,6 +1,7 @@
 package com.apicatalog.vc.service.issuer;
 
 import java.util.Arrays;
+import java.util.stream.Collectors;
 
 import com.apicatalog.ld.DocumentError;
 import com.apicatalog.ld.signature.SigningError;
@@ -22,33 +23,28 @@ class IssuerErrorHandler implements Handler<RoutingContext> {
         if (e instanceof SigningError se) {
 
             errorResponse.put("id",  toString(se.getCode()));
-
+            errorResponse.put("message",  se.getMessage());
             ctx.response().setStatusCode(400);
 
         } else if (e instanceof DocumentError de) {
 
             errorResponse.put("id", "MALFORMED");
-
-//            verificationResult.addError("MALFORMED");
-//            verificationResult.addError(toString(de));
+            errorResponse.put("message", toString(de));
 
             ctx.response().setStatusCode(400);
 
         } else if (e instanceof DecodeException de) {
 
             errorResponse.put("id", "MALFORMED");
-
-//            verificationResult.addError("MALFORMED");
-//            verificationResult.addError("INVALID_DOCUMENT");
-
+            errorResponse.put("message",  de.getMessage());
             ctx.response().setStatusCode(400);
 
 
         } else {
             ctx.response().setStatusCode(500);
-
+            errorResponse.put("message",  e.getMessage());
         }
-        errorResponse.put("message",  e.getMessage());
+
 
         var content = errorResponse.toString();
 
@@ -59,7 +55,13 @@ class IssuerErrorHandler implements Handler<RoutingContext> {
     }
 
     static String toString(DocumentError de) {
-        return de.getType().name().toUpperCase() + "_" + de.getSubject().toUpperCase();
+        return de.getType().name().toUpperCase() + "_" + de.getSubject().toUpperCase()
+        	+ (de.getAttibutes() != null && de.getAttibutes().length > 0
+        		? "_" + Arrays.stream(de.getAttibutes())
+    					.map(String::toUpperCase)
+    					.collect(Collectors.joining("_"))
+        		: ""
+        	);
     }
 
     static String toString(SigningError.Code code) {

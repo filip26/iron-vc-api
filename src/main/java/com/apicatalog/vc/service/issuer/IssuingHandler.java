@@ -17,6 +17,7 @@ import com.apicatalog.multicodec.Multicodec;
 import com.apicatalog.multicodec.Multicodec.Type;
 import com.apicatalog.vc.Vc;
 import com.apicatalog.vc.service.Constants;
+import com.apicatalog.vc.service.VcApiVerticle;
 
 import io.vertx.core.Handler;
 import io.vertx.ext.web.RoutingContext;
@@ -58,6 +59,7 @@ class IssuingHandler implements Handler<RoutingContext> {
                                 keyPair, 
                                 proofOptions
                                 )
+                            .loader(VcApiVerticle.LOADER)
                             .getCompacted();
 
             //FIXME, remove, hack to pass the testing suite

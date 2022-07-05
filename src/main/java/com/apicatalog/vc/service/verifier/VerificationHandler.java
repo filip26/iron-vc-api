@@ -10,6 +10,7 @@ import com.apicatalog.ld.DocumentError.ErrorType;
 import com.apicatalog.ld.signature.VerificationError;
 import com.apicatalog.vc.Vc;
 import com.apicatalog.vc.service.Constants;
+import com.apicatalog.vc.service.VcApiVerticle;
 
 import io.vertx.core.Handler;
 import io.vertx.ext.web.RoutingContext;
@@ -46,6 +47,8 @@ class VerificationHandler implements Handler<RoutingContext> {
                         .getJsonContent()
                         .orElseThrow(IllegalStateException::new)
                         .asJsonObject())
+
+                .loader(VcApiVerticle.LOADER)
 
                 .domain(ctx.get(Constants.OPTION_DOMAIN, null))
 
