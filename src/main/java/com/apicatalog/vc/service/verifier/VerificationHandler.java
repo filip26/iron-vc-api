@@ -6,9 +6,11 @@ import java.util.HashMap;
 import com.apicatalog.jsonld.JsonLdError;
 import com.apicatalog.jsonld.StringUtils;
 import com.apicatalog.jsonld.document.JsonDocument;
+import com.apicatalog.jsonld.loader.SchemeRouter;
 import com.apicatalog.ld.DocumentError;
 import com.apicatalog.ld.DocumentError.ErrorType;
 import com.apicatalog.ld.signature.VerificationError;
+import com.apicatalog.ld.signature.ed25519.Ed25519ContextLoader;
 import com.apicatalog.vc.integrity.DataIntegrityVocab;
 import com.apicatalog.vc.service.Constants;
 import com.apicatalog.vc.service.Suites;
@@ -21,7 +23,8 @@ import io.vertx.ext.web.RoutingContext;
 
 class VerificationHandler implements Handler<RoutingContext> {
 
-    static final Verifier VERIFIER = Verifier.with(Suites.ALL);
+    static final Verifier VERIFIER = Verifier.with(Suites.ALL)
+            .loader(new Ed25519ContextLoader(SchemeRouter.defaultInstance()));
     
     @Override
     public void handle(RoutingContext ctx) {
