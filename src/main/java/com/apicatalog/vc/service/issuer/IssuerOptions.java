@@ -4,6 +4,7 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.stream.Collectors;
 
 import com.apicatalog.ld.DocumentError;
@@ -68,7 +69,7 @@ public record IssuerOptions(
 
     protected static Collection<String> getPointers(JsonArray input) {
         if (input == null) {
-            return null;
+            return Collections.emptyList();
         }
 
         var pointers = new ArrayList<String>(input.size());
